@@ -30,6 +30,7 @@ public class FileOperations {
         File fileInvoiceHeader = new File(path + "/InvoiceHeader.csv");
         File fileInvoiceLines = new File(path + "/InvoiceLines.csv");
 
+        // check if file reader can read from files
         if (fileInvoiceHeader.canRead() && fileInvoiceLines.canRead()){
             try {
                 fileReader = new FileReader(fileInvoiceHeader);
@@ -64,6 +65,7 @@ public class FileOperations {
                 }
             }
 
+            // print as formatted in the Udacity project requirements
             String[] valuesInvoiceHeader = importedContentForInvoiceHeader.split(",");
             importedContentForInvoiceHeader = String.format("%s\n{\n%s, %s\n", valuesInvoiceHeader[0], valuesInvoiceHeader[1], valuesInvoiceHeader[2]);
             String[] valuesInvoiceLines = importedContentForInvoiceLines.split("\n");
@@ -78,18 +80,20 @@ public class FileOperations {
         }
         else {
             JOptionPane.showMessageDialog(null, "Can not find invoice files or invalid file formats! Import failed.\nFile names must be as follows:\n- InvoiceHeader.csv\n- InvoiceLines.csv", "Import Fail", JOptionPane.ERROR_MESSAGE);
-            return "error";
+            return null;
         }
 
     }
 
     public void writeFile() {
+        // formatting of strings to be ready for export
         String stringForInvoiceHeader = String.format("%d,%s,%s", invoiceHeader.getInvoiceNum(), invoiceHeader.getInvoiceDate(), invoiceHeader.getCustomerName());
         String stringForInvoiceLines = "";
         for (int i = 0; i < invoiceHeader.getInvoiceLineArrayList().size(); i++){
             stringForInvoiceLines += String.format("%d,%s,%.2f,%d\n", invoiceHeader.getInvoiceNum(), invoiceHeader.getInvoiceLineArrayList().get(i).getItemName(), invoiceHeader.getInvoiceLineArrayList().get(i).getItemPrice(), invoiceHeader.getInvoiceLineArrayList().get(i).getCount());
         }
         FileWriter fileWriter = null;
+        // open directory chooser
         File fileInvoiceHeader = new File(path + "/InvoiceHeader.csv");
         File fileInvoiceLines = new File(path + "/InvoiceLines.csv");
         try {
@@ -99,6 +103,7 @@ public class FileOperations {
             e.printStackTrace();
         }
 
+        // check if file writer can write to files
         if (fileInvoiceHeader.canWrite() && fileInvoiceLines.canWrite()){
             try {
                 fileWriter = new FileWriter(fileInvoiceHeader);

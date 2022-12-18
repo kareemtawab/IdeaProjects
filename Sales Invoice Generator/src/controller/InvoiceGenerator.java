@@ -20,17 +20,20 @@ import java.util.Date;
 
 public class InvoiceGenerator extends JFrame {
 
-    private InvoiceGenerator(InvoiceHeader invoiceHeader) throws HeadlessException {
+    private InvoiceGenerator(InvoiceHeader invoiceHeader) {
         super("Sales Invoice");
         setSize(850, 450);
         setResizable(false);
+        // center the window
         setLocationRelativeTo(null);
+        // action listener to run actions on main window create and exit
         this.addWindowListener(new WindowListener() {
             @Override
             public void windowOpened(WindowEvent e) {
                 JOptionPane.showMessageDialog(null, "Welcome to the MartZilla Invoice Generator", "Welcome", JOptionPane.PLAIN_MESSAGE);
             }
 
+            //prompt user to export invoice files before exiting
             @Override
             public void windowClosing(WindowEvent e) {
                 Object[] options = {"Yes", "No"};
@@ -90,6 +93,7 @@ public class InvoiceGenerator extends JFrame {
         setLayout(new BoxLayout(getContentPane(), BoxLayout.Y_AXIS));
         setJMenuBar(new InvoiceMenuBar(invoiceHeader).createMenuBar());
 
+        //adding top and bottom parts of main window
         add(new InvoiceHeaderPart(invoiceHeader).createHeader());
         add(new InvoiceTablePart(invoiceHeader).createTable());
 
@@ -98,9 +102,11 @@ public class InvoiceGenerator extends JFrame {
 
     public static void main(String[] args) {
 
+        // extract date
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy");
         LocalDateTime now = LocalDateTime.now();
 
+        // create arraylist of items
         ArrayList<InvoiceLine> invoiceLineArrayList = new ArrayList<>();
         invoiceLineArrayList.add(new InvoiceLine("Biscuits", 5.99f, 5));
         invoiceLineArrayList.add(new InvoiceLine("Oranges", 12.49f, 10));
@@ -112,6 +118,7 @@ public class InvoiceGenerator extends JFrame {
         invoiceLineArrayList.add(new InvoiceLine("Body Spray", 29.99f, 3));
         InvoiceHeader invoiceHeader = new InvoiceHeader(246291, dtf.format(now), "Kareem Adel", "Fifth Settlement, New Cairo", "Cairo, Egypt",  invoiceLineArrayList);
 
+        // run main window
         new InvoiceGenerator(invoiceHeader).setVisible(true);
 
     }
